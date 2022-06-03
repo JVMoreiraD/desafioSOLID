@@ -1,13 +1,14 @@
+/* eslint-disable prettier/prettier */
 import { User } from "../../model/User";
 import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
   private users: User[];
-
   private static INSTANCE: UsersRepository;
 
   private constructor() {
     this.users = [];
+
   }
 
   public static getInstance(): UsersRepository {
@@ -20,6 +21,9 @@ class UsersRepository implements IUsersRepository {
 
   create({ name, email }: ICreateUserDTO): User {
     // Complete aqui
+    const user = this.create({ name, email })
+    console.log(user)
+    return user;
   }
 
   findById(id: string): User | undefined {
@@ -37,6 +41,6 @@ class UsersRepository implements IUsersRepository {
   list(): User[] {
     // Complete aqui
   }
-}
 
+}
 export { UsersRepository };
