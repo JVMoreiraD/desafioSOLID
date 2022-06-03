@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Request, Response } from "express";
 
 import { ListAllUsersUseCase } from "./ListAllUsersUseCase";
@@ -7,6 +8,14 @@ class ListAllUsersController {
 
   handle(request: Request, response: Response): Response {
     // Complete aqui
+    try {
+      const { user_id } = request.headers;
+      const list = this.listAllUsersUseCase.execute({ user_id: String(user_id) });
+      return response.status(200).json(list)
+    } catch (error) {
+      return response.status(400).json({ error: error.message })
+
+    }
   }
 }
 
