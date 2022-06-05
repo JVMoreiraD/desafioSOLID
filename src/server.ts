@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
 import SwaggerUI from "swagger-ui-express";
-import swaggerFile from "swagger.json"
 
 import { app } from ".";
+import swaggerFile from "./swagger.json";
 
 app.use("/api-docs", SwaggerUI.serve, SwaggerUI.setup(swaggerFile));
 

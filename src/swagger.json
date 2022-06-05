@@ -1,0 +1,309 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Desafio SOLID",
+        "description": "API feita no desafio SOLID do curso ignite",
+        "version": "1.0.0",
+        "contact": {
+            "email": "jvitormoreirad@hotmail.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a user",
+                "description": "Create a new User",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/UserPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Operação realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserPostResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Email já esta em uso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserPostResponseError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Retorna todos os usuários",
+                "description": "Somente usuário admin pode acessar",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "user_id",
+                        "description": "ID de um usuário administrador",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserGetResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário não tem permissão de listar"
+                    }
+                }
+            }
+        },
+        "/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Retorna um usuário em especifico",
+                "description": "Retorna um usuário especifico a partir do path",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "description": "ID do usuário que deseja retornar",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserPostResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserErrorNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Torna um usuário em administrador",
+                "description": "Recebe um usuário e o torna administrador",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "description": "ID do usuário que deseja tornar administrador",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserPatchResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/UserErrorNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "UserPost": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "name": "João",
+                "email": "jvitormoreirad@hotmail.com"
+            }
+        },
+        "UserPostResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "admin": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "date-time"
+                },
+                "updated_at": {
+                    "type": "date-time"
+                }
+            },
+            "example": {
+                "id": "40e8b512-10ea-4bfe-984c-f943a5367492",
+                "admin": false,
+                "name": "João",
+                "email": "jvitormoreirad@hotmail.com",
+                "created_at": "2022-06-05T18:25:23.379Z",
+                "updated_at": "2022-06-05T18:25:23.379Z"
+            }
+        },
+        "UserPatchResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "admin": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "date-time"
+                },
+                "updated_at": {
+                    "type": "date-time"
+                }
+            },
+            "example": {
+                "id": "40e8b512-10ea-4bfe-984c-f943a5367492",
+                "admin": true,
+                "name": "João",
+                "email": "jvitormoreirad@hotmail.com",
+                "created_at": "2022-06-05T18:25:23.379Z",
+                "updated_at": "2022-06-05T18:25:40.379Z"
+            }
+        },
+        "UserPostResponseError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "error": "Usuário já existe"
+            }
+        },
+        "UserGetResponse": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "admin": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "date-time"
+                    }
+                },
+                "example": {
+                    "id": "40e8b512-10ea-4bfe-984c-f943a5367492",
+                    "admin": false,
+                    "name": "João",
+                    "email": "jvitormoreirad@hotmail.com",
+                    "created_at": "2022-06-05T18:25:23.379Z",
+                    "updated_at": "2022-06-05T18:25:23.379Z"
+                }
+            }
+        },
+        "UserErrorNotFound": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "error": "Usuário não encontrado"
+            }
+        }
+    }
+}
